@@ -39,6 +39,6 @@ ext {
 	androidXVersion = '1.1.0'
 	androidXLegacyV4 = '1.0.0'
 
-    versionCodeNum = 1
-    versionNameString = '1.0.0'
+    versionCodeNum = 2
+    versionNameString = '1.0.1'
 }
