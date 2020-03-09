@@ -36,22 +36,29 @@
 		android:text="A"
 		android:textSize="48sp" />
 
-	<TextView
+	<ScrollView
 		android:layout_width="match_parent"
 		android:layout_height="0dp"
-		android:layout_weight="1"
-		android:gravity="center"
-		android:minHeight="16dp"
-		android:text="B"
-		android:textSize="48sp" />
+		android:layout_weight="1" >
 
-	<TextView
+		<TextView
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:gravity="center"
+			android:minHeight="16dp"
+			android:text="B0\nB1\nB2\nB3\nB4\nB5\nB6\nB7\nB8\nB9"
+			android:textSize="48sp" />
+	</ScrollView>
+
+	<EditText
 		android:layout_width="match_parent"
 		android:layout_height="0dp"
 		android:layout_weight="1"
 		android:gravity="center"
-		android:text="C"
-		android:textSize="48sp" />
+		android:text="CDEFG"
+		android:textSize="48sp"
+		android:inputType="text"
+		android:importantForAutofill="no" />
 
 	<com.serenegiant.widget.SplitLinearLayout
 		android:layout_width="match_parent"
