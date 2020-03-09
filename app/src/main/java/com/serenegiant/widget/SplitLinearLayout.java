@@ -308,6 +308,7 @@ public class SplitLinearLayout extends LinearLayout {
 	@SuppressLint("ClickableViewAccessibility")
 	@Override
 	public boolean onTouchEvent(final MotionEvent event) {
+		boolean result = super.onTouchEvent(event);
 		if (mEnableSplitter) {
 			final int action = event.getActionMasked();
 			switch (action) {
@@ -323,10 +324,9 @@ public class SplitLinearLayout extends LinearLayout {
 				handleActionUpn(event);
 				break;
 			}
-			// FIXME デフォルトの動作は常に実行したほうがいいのかも
-			return true;
+			result = true;
 		}
-		return super.onTouchEvent(event);
+		return result;
 	}
 
 	/**
