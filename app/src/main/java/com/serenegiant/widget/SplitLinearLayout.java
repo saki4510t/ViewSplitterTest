@@ -312,6 +312,24 @@ public class SplitLinearLayout extends LinearLayout {
 		mIsFirstTime = false;
 	}
 
+	@Override
+	public boolean onInterceptTouchEvent(final MotionEvent event) {
+		if (mEnableSplitter) {
+			final int action = event.getActionMasked();
+			switch (action) {
+			case MotionEvent.ACTION_DOWN:
+				// スプリッターが見つかった時
+				return findSplitter(event) != null;
+			case MotionEvent.ACTION_MOVE:
+			case MotionEvent.ACTION_CANCEL:
+			case MotionEvent.ACTION_UP:
+				// スプリッターの移動中
+				return activeSplitter != null;
+			}
+		}
+		return super.onInterceptTouchEvent(event);
+	}
+
 	@SuppressLint("ClickableViewAccessibility")
 	@Override
 	public boolean onTouchEvent(final MotionEvent event) {
