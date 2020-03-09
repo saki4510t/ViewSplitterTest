@@ -470,25 +470,7 @@ public class SplitLinearLayout extends LinearLayout {
 		final int x = (int)event.getX();
 		final int y = (int)event.getY();
 		if (DEBUG) Log.v(TAG, String.format("handleActionDown:(%d,%d)", x, y));
-		Splitter found = null;
-		int delta = Integer.MAX_VALUE;
-		// 複数のスプリッターのタッチ領域が重なっているときのために
-		// タッチした位置に一番近いタッチ可能なスプリッターを選択する
-		for (final Splitter splitter: mSplitters.values()) {
-			if (splitter.touchContains(x, y)) {
-				if (DEBUG) Log.v(TAG, "handleActionDown:splitter found.");
-				int d;
-				if (getOrientation() == VERTICAL) {
-					d = Math.abs(splitter.bounds.centerY() - y);
-				} else {
-					d = Math.abs(splitter.bounds.centerX() - x);
-				}
-				if ((found == null) || (d < delta)) {
-					found = splitter;
-					delta = d;
-				}
-			}
-		}
+		final Splitter found = findSplitter(event);
 		if (found != null) {
 			performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY);
 			found.startDragging();
@@ -605,6 +587,38 @@ public class SplitLinearLayout extends LinearLayout {
 	@Nullable
 	private Splitter getSplitter(@NonNull final View child) {
 		return mSplitters.containsKey(child) ? mSplitters.get(child) : null;
+	}
+
+	/**
+	 * 指定したMotionEventからタッチ可能なSplitterを探す
+	 * 見つからなければnullを返す
+	 * @param event
+	 * @return
+	 */
+	@Nullable
+	private Splitter findSplitter(@NonNull final MotionEvent event) {
+		final int x = (int)event.getX();
+		final int y = (int)event.getY();
+		Splitter found = null;
+		int delta = Integer.MAX_VALUE;
+		// 複数のスプリッターのタッチ領域が重なっているときのために
+		// タッチした位置に一番近いタッチ可能なスプリッターを選択する
+		for (final Splitter splitter: mSplitters.values()) {
+			if (splitter.touchContains(x, y)) {
+				int d;
+				if (getOrientation() == VERTICAL) {
+					d = Math.abs(splitter.bounds.centerY() - y);
+				} else {
+					d = Math.abs(splitter.bounds.centerX() - x);
+				}
+				if ((found == null) || (d < delta)) {
+					found = splitter;
+					delta = d;
+				}
+			}
+		}
+		if (DEBUG && (found != null)) Log.v(TAG, "findSplitter:splitter found.");
+		return found;
 	}
 
 //--------------------------------------------------------------------------------
