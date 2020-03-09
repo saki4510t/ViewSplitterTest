@@ -24,6 +24,7 @@ import android.graphics.Canvas;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.PaintDrawable;
+import android.os.Parcel;
 import android.os.Parcelable;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
@@ -233,14 +234,20 @@ public class SplitLinearLayout extends LinearLayout {
 	@Nullable
 	@Override
 	protected Parcelable onSaveInstanceState() {
-		return super.onSaveInstanceState();
-		// FIXME 未実装
+		final SavedState savedState = new SavedState(super.onSaveInstanceState());
+		// Viewの状態を保存する 今は何もなし
+		return savedState;
 	}
 
 	@Override
 	protected void onRestoreInstanceState(final Parcelable state) {
-		// FIXME 未実装
-		super.onRestoreInstanceState(state);
+		if (!(state instanceof SavedState)) {
+			super.onRestoreInstanceState(state);
+			return;
+		}
+		final SavedState savedState = (SavedState) state;
+		super.onRestoreInstanceState(savedState.getSuperState());
+		// Viewの状態を読み込む 今は何もなし
 	}
 
 	@Override
@@ -598,6 +605,38 @@ public class SplitLinearLayout extends LinearLayout {
 	@Nullable
 	private Splitter getSplitter(@NonNull final View child) {
 		return mSplitters.containsKey(child) ? mSplitters.get(child) : null;
+	}
+
+//--------------------------------------------------------------------------------
+
+	/**
+	 * Viewの状態保持用
+	 */
+	public static class SavedState extends BaseSavedState {
+		public static final Creator<SavedState> CREATOR = new Creator<SavedState>() {
+
+			public SavedState createFromParcel(Parcel in) {
+				return new SavedState(in);
+			}
+
+			public SavedState[] newArray(int size) {
+				return new SavedState[size];
+			}
+
+		};
+
+		private SavedState(final Parcelable superState) {
+			super(superState);
+		}
+
+		public SavedState(final Parcel in) {
+			super(in);
+		}
+
+		@Override
+		public void writeToParcel(Parcel out, int flags) {
+			super.writeToParcel(out, flags);
+		}
 	}
 
 }
